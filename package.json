@@ -8,8 +8,8 @@
   },
   "author": "tai5863",
   "dependencies": {
-    "osc": "2.4.1",
     "express": "^4.16.2",
+    "node-osc": "^5.2.0",
     "ws": "^3.2.0"
   }
 }
