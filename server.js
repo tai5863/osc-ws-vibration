@@ -20,7 +20,7 @@ wss.on('connection', function(ws, req) {
   connects.push(ws);
   console.log('New Client Connected: ' + connects.length);
 
-  ws.on('message', function() {
+  ws.on('message', function(message) {
     console.log('recieved: %s', message);
     broadcast(message);
   });
