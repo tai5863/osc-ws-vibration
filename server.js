@@ -26,18 +26,13 @@ oscServer.on('message', function(message) {
   let sendMessage;
 
   switch (message[0]) {
-    case '/address1':
-      console.log('address1');
-      broadcast('address1');
+    case '/play':
+      message.splice(0, 1);
+      broadcast(JSON.stringify(message));
+
+      // send osc message
       sendMessage = new osc.Message('/address1');
       sendMessage.append('a');
-      oscClient.send(sendMessage);
-      break;
-    case '/address2':
-      console.log('address2');
-      broadcast('address2');
-      sendMessage = new osc.Message('/address2');
-      sendMessage.append('b');
       oscClient.send(sendMessage);
       break;
     default:

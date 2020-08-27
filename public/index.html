@@ -23,18 +23,10 @@
 
     ws.onmessage = function(event) {
       let recievedMessage = event.data;
-      
-      switch (recievedMessage) {
-        case 'address1':
-          window.navigator.vibrate(200);
-          break;
-        case 'address2':
-          window.navigator.vibrate(1000);
-          break;
-        default:
-          break;
-      }
 
+      recievedMessage = JSON.parse(recievedMessage);
+      window.navigator.vibrate(recievedMessage);
+      
       message.innerHTML = recievedMessage;
     }
   </script>
