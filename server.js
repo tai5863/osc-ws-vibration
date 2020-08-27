@@ -1,14 +1,16 @@
-let express = reqire('express');
-  http = reqire('http');
-  url = reqire('url');
-  path = reqire('path');
-  webSocket = reqire('ws');
+let express = require('express');
+  http = require('http');
+  url = require('url');
+  path = require('path');
+  webSocket = require('ws');
 
 let app = express();
   server = http.createServer(app);
   wss = new webSocket.Server({ server: server });
 
 let connects = []
+
+app.use(express.static(path.join(__dirname, '/public')));
 
 wss.on('connection', function(ws, req) {
   let location = url.parse(req.url, true);

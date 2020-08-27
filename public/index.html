@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OSC in Sample</title>
-  <script src="bower_components/osc.js/dist/osc-browser.min.js"></script>
+  <title>OSC In Sample</title>
 </head>
 <body>
   <div id="container">
-    <h1>OSC in Sample</h1>
+    <h1>OSC In Sample</h1>
     <div>
       <span id="message"></span> 
     </div>
@@ -17,7 +16,7 @@
   <script>
     let host = location.hostname;
     
-    const ws = new WebSocket('ws://' + host + ':8080');
+    let ws = new WebSocket('ws://' + host + ':8080');
 
     ws.onmessage = function(event) {
       let recievedMessage = event.data;
