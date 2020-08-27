@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSC in Sample</title>
+  <script src="bower_components/osc.js/dist/osc-browser.min.js"></script>
+</head>
+<body>
+  <div id="container">
+    <h1>OSC in Sample</h1>
+    <div>
+      <span id="message"></span> 
+    </div>
+  </div>
+  
+  <script>
+    let host = location.hostname;
+    
+    const ws = new WebSocket('ws://' + host + ':8080');
+
+    ws.onmessage = function(event) {
+      let recievedMessage = event.data;
+      const message = document.getElementById(message); 
+      message.innerHTML = recievedMessage;
+    }
+  </script>
+</body>
+</html>
