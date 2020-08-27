@@ -1,0 +1,7 @@
+{
+  "name": "osc_in_app",
+  "version": "1.0.0",
+  "dependencies": {
+    "osc": "2.4.1"
+  }
+}
