@@ -6,28 +6,46 @@
   <title>OSC WebSocket Sample</title>
 </head>
 <body>
-  <div id="container">
+  <div id="container" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;">
     <h1>OSC WebSocket Sample</h1>
     <div>
       <p>※画面をタップすると振動がスタート</p>
-      <span id="message"></span> 
+      <p>Vibrated: <span id="message1"></span></p>
+      <p>Message: <span id="message2"></span></p>
     </div>
   </div>
   
   <script>
     let host = location.hostname;
-    
     let ws = new WebSocket('ws://' + host + ':8080');
 
-    const message = document.getElementById('message'); 
+    let duration = [100, 100, 100];
+    let count = 0;
+
+    function counter() {
+      count++; 
+    }
+
+    const container = document.getElementById('container');
+    container.addEventListener('touchstart', counter, false);
+    const message1 = document.getElementById('message1'); 
+    const message2 = document.getElementById('message2'); 
 
     ws.onmessage = function(event) {
-      let recievedMessage = event.data;
+      if (count % 2 == 1) {
+        message1.innerHTML = 'true';
+        let recievedMessage = event.data;
 
-      recievedMessage = JSON.parse(recievedMessage);
-      window.navigator.vibrate(recievedMessage);
-      
-      message.innerHTML = recievedMessage;
+        recievedMessage = JSON.parse(recievedMessage);
+        if (recievedMessage[0] == 'bang') {
+          window.navigator.vibrate(100);
+        }
+        
+        message2.innerHTML = recievedMessage;
+        console.log(recievedMessage);
+      } else {
+        message1.innerHTML = 'false';
+      }
     }
   </script>
 </body>

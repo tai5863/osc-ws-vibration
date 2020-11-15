@@ -14,8 +14,8 @@ let connects = []
 
 app.use(express.static(path.join(__dirname, '/public')));
 
-let oscClient = new osc.Client('127.0.0.1', 6000);
-let oscServer = new osc.Server(3333, '0.0.0.0', () => {
+// let oscClient = new osc.Client('127.0.0.1', 6000);
+let oscServer = new osc.Server(8004, '127.0.0.1', () => {
   console.log('OSC Server is listening');
 });
 
@@ -26,14 +26,14 @@ oscServer.on('message', function(message) {
   let sendMessage;
 
   switch (message[0]) {
-    case '/play':
+    case '/heart-beat':
       message.splice(0, 1);
       broadcast(JSON.stringify(message));
 
       // send osc message
-      sendMessage = new osc.Message('/address1');
-      sendMessage.append('a');
-      oscClient.send(sendMessage);
+      // sendMessage = new osc.Message('/address1');
+      // sendMessage.append('a');
+      // oscClient.send(sendMessage);
       break;
     default:
       break;
