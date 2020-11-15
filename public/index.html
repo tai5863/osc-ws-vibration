@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OSC WebSocket Sample</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
 </head>
 <body>
-  <div id="container" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;">
+  <div id="container">
     <h1>OSC WebSocket Sample</h1>
     <div>
       <p>※画面をタップすると振動がスタート</p>
@@ -16,20 +17,88 @@
   </div>
   
   <script>
+
+    // core
+
     let host = location.hostname;
     let ws = new WebSocket('ws://' + host + ':8080');
 
-    let duration = [100, 100, 100];
-    let count = 0;
+    let duration = 100; // vibration duration
+    let count = 0; // tap count
 
     function counter() {
       count++; 
     }
 
+    // visualizer 
+
+    // settings
+
+    const minScale =  1.0;
+    const maxScale =  2.0;
+    const randomScale = () => minScale + ((maxScale - minScale) * Math.random());
+    const randomColor = () => '0x' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+    let radius = 50;
+    let scale, color;
+
+    let isAnimate = false;
+    const toggleAnimate = () => isAnimate = !isAnimate;
+
+    const handler = () => {
+      toggleAnimate();
+      setTimeout(toggleAnimate, duration);  
+    }
+
+    const renderCircle = (radius, color) => {
+      const gr = new PIXI.Graphics();
+      gr.beginFill(color);
+      gr.x = app.screen.width / 2;
+      gr.y = app.screen.height / 2;
+      gr.drawCircle(0, 0, radius);
+      gr.endFill();
+      return gr;
+    }
+
+    const app = new PIXI.Application({
+      width: window.innerWidth,
+      height: window.innerHeight,
+      backgroundColor: 0x000000,
+    });
+
+    const { view, renderer } = app;
+
+    document.body.appendChild(view);
+
+    let circle = renderCircle(radius, 0xffffff);
+    app.stage.addChild(circle);
+
+    // animation 
+
+    const animate = () => {
+
+      if (isAnimate) {
+        scale = randomScale();
+        color = 0xff0044;
+      } else {
+        scale = 1.0;
+        color = 0x111111;
+      }
+
+      circle.scale.set(scale);
+      circle.tint = color;
+
+      requestAnimationFrame(animate);
+      renderer.render(app.stage);
+    }
+
+    animate();
+
     const container = document.getElementById('container');
     container.addEventListener('touchstart', counter, false);
     const message1 = document.getElementById('message1'); 
     const message2 = document.getElementById('message2'); 
+
+    // vibration
 
     ws.onmessage = function(event) {
       if (count % 2 == 1) {
@@ -38,6 +107,7 @@
 
         recievedMessage = JSON.parse(recievedMessage);
         if (recievedMessage[0] == 'bang') {
+          handler();
           window.navigator.vibrate(100);
         }
         
@@ -50,3 +120,38 @@
   </script>
 </body>
 </html>
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  color: #fff;
+}
+
+#container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+}
+</style>
