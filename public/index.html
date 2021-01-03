@@ -8,7 +8,7 @@
 </head>
 <body>
   <div id="container">
-    <h1>OSC Vibration Sample</h1>
+    <h1>OSC WebSocket Vibration</h1>
     <div>
       <p>※画面をタップすると振動がスタート</p>
       <p>Vibrate : <span id="message1"></span></p>
@@ -94,7 +94,7 @@
     animate();
 
     const container = document.getElementById('container');
-    container.addEventListener('mousedown', counter, false);
+    container.addEventListener('touchstart', counter, false);
     const message1 = document.getElementById('message1'); 
     const message2 = document.getElementById('message2'); 
 

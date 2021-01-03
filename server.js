@@ -24,7 +24,6 @@ oscServer.on('message', function(message) {
   console.log(message);
 
   let sendMessage;
-  console.log(message[0]);
 
   switch (message[0]) {
     case '/play':
