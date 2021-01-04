@@ -26,7 +26,7 @@ oscServer.on('message', function(message) {
   let sendMessage;
 
   switch (message[0]) {
-    case '/play':
+    case '/vibration':
       message.splice(0, 1);
       broadcast(JSON.stringify(message));
 

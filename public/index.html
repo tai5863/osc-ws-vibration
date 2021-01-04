@@ -19,21 +19,18 @@
   <script>
 
     // core
-
     let host = location.hostname;
     let ws = new WebSocket('ws://' + host + ':8080');
 
     let duration = 100; // vibration duration
-    let count = 0; // tap count
+    let count = 1; // tap count
 
     function counter() {
       count++; 
     }
 
     // visualizer 
-
     // settings
-
     const minScale =  1.0;
     const maxScale =  2.0;
     const randomScale = () => minScale + ((maxScale - minScale) * Math.random());
@@ -73,7 +70,6 @@
     app.stage.addChild(circle);
 
     // animation 
-
     const animate = () => {
 
       if (isAnimate) {
@@ -99,14 +95,14 @@
     const message2 = document.getElementById('message2'); 
 
     // vibration
-
     ws.onmessage = function(event) {
       if (count % 2 == 1) {
         message1.innerHTML = 'true';
         let recievedMessage = event.data;
 
         recievedMessage = JSON.parse(recievedMessage);
-        if (recievedMessage[0] == 'bang') {
+        console.log(recievedMessage);
+        if (recievedMessage[0] == 'val') {
           handler();
           window.navigator.vibrate(100);
         }
